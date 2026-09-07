@@ -106,6 +106,7 @@
     th { color: var(--text-muted); font-weight: 500; }
     td.num, th.num { text-align: right; }
     tr.total-row td { font-weight: 700; font-size: 0.98rem; border-bottom: none; }
+    tr.cashflow-row td { font-size: 0.85rem; color: var(--text-muted); border-top: 1px dashed var(--border); }
 
     .btn-ai {
       background: var(--accent);
@@ -125,7 +126,7 @@
 <div class="container">
   <header>
     <h1>Autoilun Kokonaiskustannusvertailu</h1>
-    <p class="subtitle">Nykytila vs. Beely vs. Osamaksu tekoälypohjaisella arvonmäärityksellä</p>
+    <p class="subtitle">Nykytila vs. Beely vs. Osamaksu (TCO & Kassavirta)</p>
   </header>
 
   <div class="card ai-card">
@@ -171,6 +172,7 @@
       </div>
     </div>
 
+    <!-- Nykyauto 1 -->
     <div id="curCar1Card" class="card" style="background: var(--card-sub); border: 1px solid var(--border); margin-bottom: 14px;">
       <h3 style="color: var(--accent); font-size: 1rem; margin-bottom: 12px;">Nykyinen Auto 1</h3>
       <div class="row-3">
@@ -201,14 +203,14 @@
 
       <div id="c1_loanFields" class="finance-box" style="display: none;">
         <div class="row-3">
-          <div class="input-group"><label for="c1_price">Ostohinta (€)</label><input type="number" id="c1_price" value="18000"></div>
-          <div class="input-group"><label for="c1_down">Käsiraha (€)</label><input type="number" id="c1_down" value="2000"></div>
+          <div class="input-group"><label for="c1_price">Auton arvo nyt (€)</label><input type="number" id="c1_price" value="18000"></div>
+          <div class="input-group"><label for="c1_curDebt">Jäljellä oleva velka nyt (€)</label><input type="number" id="c1_curDebt" value="12000"></div>
           <div class="input-group"><label for="c1_balloon">Viimeinen erä (€)</label><input type="number" id="c1_balloon" value="5000"></div>
         </div>
         <div class="row-3">
           <div class="input-group"><label for="c1_rate">Korko (%)</label><input type="number" id="c1_rate" value="4.5" step="0.1"></div>
-          <div class="input-group"><label for="c1_period">Laina-aika (kk)</label><input type="number" id="c1_period" value="60"></div>
-          <div class="input-group"><label for="c1_res">Arvioitu myyntihinta lopussa (€)</label><input type="number" id="c1_res" value="12000"></div>
+          <div class="input-group"><label for="c1_period">Laina-aikaa jäljellä (kk)</label><input type="number" id="c1_period" value="36"></div>
+          <div class="input-group"><label for="c1_res" class="lbl-res-c1">Myyntiarvo pitoajan lopussa (€)</label><input type="number" id="c1_res" value="12000"></div>
         </div>
         <div class="info-tag" id="c1_loanInfo">-</div>
       </div>
@@ -246,6 +248,7 @@
       </div>
     </div>
 
+    <!-- Nykyauto 2 -->
     <div id="curCar2Card" class="card" style="background: var(--card-sub); border: 1px solid var(--border); margin-bottom: 14px; display: none;">
       <h3 style="color: var(--accent); font-size: 1rem; margin-bottom: 12px;">Nykyinen Auto 2</h3>
       <div class="row-3">
@@ -270,14 +273,14 @@
 
       <div id="c2_loanFields" class="finance-box" style="display: none;">
         <div class="row-3">
-          <div class="input-group"><label for="c2_price">Ostohinta (€)</label><input type="number" id="c2_price" value="25000"></div>
-          <div class="input-group"><label for="c2_down">Käsiraha (€)</label><input type="number" id="c2_down" value="2500"></div>
+          <div class="input-group"><label for="c2_price">Auton arvo nyt (€)</label><input type="number" id="c2_price" value="25000"></div>
+          <div class="input-group"><label for="c2_curDebt">Jäljellä oleva velka nyt (€)</label><input type="number" id="c2_curDebt" value="18000"></div>
           <div class="input-group"><label for="c2_balloon">Viimeinen erä (€)</label><input type="number" id="c2_balloon" value="10000"></div>
         </div>
         <div class="row-3">
           <div class="input-group"><label for="c2_rate">Korko (%)</label><input type="number" id="c2_rate" value="4.5" step="0.1"></div>
-          <div class="input-group"><label for="c2_period">Laina-aika (kk)</label><input type="number" id="c2_period" value="60"></div>
-          <div class="input-group"><label for="c2_res">Arvioitu myyntihinta lopussa (€)</label><input type="number" id="c2_res" value="16000"></div>
+          <div class="input-group"><label for="c2_period">Laina-aikaa jäljellä (kk)</label><input type="number" id="c2_period" value="48"></div>
+          <div class="input-group"><label for="c2_res" class="lbl-res-c2">Myyntiarvo pitoajan lopussa (€)</label><input type="number" id="c2_res" value="16000"></div>
         </div>
         <div class="info-tag" id="c2_loanInfo">-</div>
       </div>
@@ -316,6 +319,7 @@
     </div>
   </div>
 
+  <!-- Uudet Vaihtoehdot -->
   <div class="grid-2">
     <div class="card beely-card">
       <h2 style="color: var(--beely)">Beely (Vaihtoehto A)</h2>
@@ -384,17 +388,17 @@
         <div class="fuel-result" id="l_fuelCostLabel">-</div>
       </div>
 
-      <span class="sub-head">Skenaariomuuttujat (Jäännösarvo & Huollot)</span>
+      <span class="sub-head">Skenaariomuuttujat (Jäännösarvo pitoajan lopussa & Huollot)</span>
       <div class="row-2">
-        <div class="input-group"><label for="resBest">Jäännösarvo: Best (€)</label><input type="number" id="resBest" value="16500"></div>
+        <div class="input-group"><label for="resBest" class="lbl-res">Jäännösarvo: Best (€)</label><input type="number" id="resBest" value="16500"></div>
         <div class="input-group"><label for="maintBest">Huollot: Best (€/v)</label><input type="number" id="maintBest" value="400"></div>
       </div>
       <div class="row-2">
-        <div class="input-group"><label for="resEst">Jäännösarvo: Est (€)</label><input type="number" id="resEst" value="15200"></div>
+        <div class="input-group"><label for="resEst" class="lbl-res">Jäännösarvo: Est (€)</label><input type="number" id="resEst" value="15200"></div>
         <div class="input-group"><label for="maintEst">Huollot: Est (€/v)</label><input type="number" id="maintEst" value="800"></div>
       </div>
       <div class="row-2">
-        <div class="input-group"><label for="resWorst">Jäännösarvo: Worst (€)</label><input type="number" id="resWorst" value="13500"></div>
+        <div class="input-group"><label for="resWorst" class="lbl-res">Jäännösarvo: Worst (€)</label><input type="number" id="resWorst" value="13500"></div>
         <div class="input-group"><label for="maintWorst">Huollot: Worst (€/v)</label><input type="number" id="maintWorst" value="1800"></div>
       </div>
     </div>
@@ -448,7 +452,6 @@
 </div>
 
 <script>
-  // localStorage avaimen säilyttämiseksi
   const savedKey = localStorage.getItem('gemini_api_key');
   if (savedKey) document.getElementById('geminiApiKey').value = savedKey;
 
@@ -456,7 +459,7 @@
     localStorage.setItem('gemini_api_key', e.target.value.trim());
   });
 
-  // GEMINI API KUTSU
+  // GEMINI API
   document.getElementById('btnAnalyze').addEventListener('click', async () => {
     const apiKey = document.getElementById('geminiApiKey').value.trim();
     const promptText = document.getElementById('carPrompt').value.trim();
@@ -478,13 +481,13 @@
     status.textContent = 'Lasketaan auton markkina-arvoa ja arvonalenemaa...';
     status.style.color = 'var(--accent)';
 
-    const systemPrompt = `Olet Suomen automarkkinan ja arvonaleneman asiantuntija. Arvioi auton ostohinta, realistinen jäännösarvo pitoajan jälkeen eri skenaarioissa (Best/Est/Worst), huoltokulut ja kulutus Suomen olosuhteissa. Palauta VAIN validia JSONia täsmälleen tässä muodossa ilman koodilohkoja tai ylimääräistä tekstiä:
+    const systemPrompt = `Olet Suomen automarkkinan asiantuntija. Arvioi auton ostohinta tänään, realistinen myyntihinta tasan pitoajan kuluttua (Best, Est, Worst), huoltokulut (€/v) ja todellinen kulutus. Palauta VAIN JSON muodossa:
 {"carPrice": number, "resBest": number, "resEst": number, "resWorst": number, "maintYearEst": number, "fuelType": "bensa" | "diesel" | "sahko" | "plugin", "fuelCons": number}`;
 
-    const userContent = `Auto: "${promptText}". Pitoaika: ${months} kk, arvioitu ajomäärä: ${km} km/v.`;
+    const userContent = `Auto: "${promptText}". Vertailupitoaika: ${months} kk, ajomäärä: ${km} km/v.`;
 
     try {
-      const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+      const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -520,8 +523,9 @@
     }
   });
 
-  // Laskentalogiikka
+  // Korko- ja osamaksulaskuri
   function calculateLoanAnnuity(principal, balloon, annualRatePct, periodMonths) {
+    if (principal <= 0) return 0;
     const r = (annualRatePct / 100) / 12;
     if (r > 0) {
       const discountFactor = Math.pow(1 + r, -periodMonths);
@@ -531,25 +535,48 @@
     return (principal - balloon) / periodMonths;
   }
 
-  function simulateLoanInterest(principal, balloon, annualRatePct, periodMonths, monthsToSimulate) {
+  function simulateLoan(principal, balloon, annualRatePct, periodMonths, monthsToSimulate) {
+    if (principal <= 0) {
+      return { monthlyPayment: 0, interestPaid: 0, principalPaid: 0, remainingDebt: 0, totalPaymentsMade: 0 };
+    }
     const r = (annualRatePct / 100) / 12;
     const monthlyPayment = calculateLoanAnnuity(principal, balloon, annualRatePct, periodMonths);
     let rem = principal;
     let interestPaid = 0;
+    let principalPaid = 0;
+    let totalPaymentsMade = 0;
+
     const count = Math.min(monthsToSimulate, periodMonths);
     for (let i = 0; i < count; i++) {
       const interest = rem * r;
       const amort = monthlyPayment - interest;
       interestPaid += interest;
+      principalPaid += amort;
       rem -= amort;
+      totalPaymentsMade += monthlyPayment;
     }
-    return { monthlyPayment, interestPaid, remainingPrincipal: rem };
+
+    // Jos pitoaika kattaa koko laina-ajan, maksetaan myös viimeinen erä (balloon)
+    if (monthsToSimulate >= periodMonths) {
+      totalPaymentsMade += balloon;
+      principalPaid += balloon;
+      rem = 0;
+    }
+
+    return { 
+      monthlyPayment, 
+      interestPaid, 
+      principalPaid, 
+      remainingDebt: Math.max(0, rem),
+      totalPaymentsMade
+    };
   }
 
   function calculateFuelCost(kmPerYear, months, type, cons, price) {
     const totalKm = (kmPerYear / 12) * months;
     if (type === 'sahko') return (totalKm / 100) * cons * price;
     if (type === 'plugin') {
+      // 50% sähköllä (18 kWh / 100km, 0.20 €/kWh), 50% polttonesteellä
       const halfKm = totalKm / 2;
       return ((halfKm / 100) * 18 * 0.20) + ((halfKm / 100) * cons * price);
     }
@@ -617,22 +644,30 @@
     if (ownership === 'lease' && document.getElementById(`${prefix}_leaseIncludesMaint`).value === 'yes') maintYear = 0;
     const maintTotal = (maintYear / 12) * months;
 
-    let depTotal = 0, interestTotal = 0, leaseTotal = 0;
+    let depTotal = 0, interestTotal = 0, leaseTotal = 0, cashFlow = 0;
+
     if (ownership === 'owned') {
       depTotal = (parseFloat(document.getElementById(`${prefix}_depreciationMo`).value) || 0) * months;
+      cashFlow = maintTotal + insTax;
     } else if (ownership === 'lease') {
       leaseTotal = (parseFloat(document.getElementById(`${prefix}_leaseMo`).value) || 0) * months;
+      cashFlow = leaseTotal + maintTotal + insTax;
     } else if (ownership === 'loan') {
-      const price = parseFloat(document.getElementById(`${prefix}_price`).value) || 0;
-      const down = parseFloat(document.getElementById(`${prefix}_down`).value) || 0;
+      const priceNow = parseFloat(document.getElementById(`${prefix}_price`).value) || 0;
+      const debtNow = parseFloat(document.getElementById(`${prefix}_curDebt`).value) || 0;
       const balloon = parseFloat(document.getElementById(`${prefix}_balloon`).value) || 0;
       const rate = parseFloat(document.getElementById(`${prefix}_rate`).value) || 0;
-      const period = parseFloat(document.getElementById(`${prefix}_period`).value) || 60;
+      const period = parseFloat(document.getElementById(`${prefix}_period`).value) || 36;
       const res = parseFloat(document.getElementById(`${prefix}_res`).value) || 0;
-      const sim = simulateLoanInterest(Math.max(0, price - down), balloon, rate, period, months);
+
+      const sim = simulateLoan(debtNow, balloon, rate, period, months);
       interestTotal = sim.interestPaid;
-      depTotal = Math.max(0, price - res);
-      document.getElementById(`${prefix}_loanInfo`).textContent = `→ Lainan kk-erä: ${Math.round(sim.monthlyPayment).toLocaleString('fi-FI')} €/kk`;
+      
+      // Todellinen taloudellinen arvonalenema nykyarvosta arvioituun myyntihintaan
+      depTotal = Math.max(0, priceNow - res);
+      cashFlow = sim.totalPaymentsMade + maintTotal + insTax;
+
+      document.getElementById(`${prefix}_loanInfo`).textContent = `→ Lainan kk-erä: ${Math.round(sim.monthlyPayment).toLocaleString('fi-FI')} €/kk (Jäljellä oleva velka: ${Math.round(sim.remainingDebt).toLocaleString('fi-FI')} €)`;
     }
 
     const fuelType = document.getElementById(`${prefix}_fuelType`).value;
@@ -643,13 +678,16 @@
     document.getElementById(`${prefix}_fuelCostLabel`).textContent = 
       `→ Polttoainekulu: ${Math.round(fuelCost / months)} €/kk (${Math.round(fuelCost).toLocaleString('fi-FI')} € koko ajalta)`;
 
+    cashFlow += fuelCost;
+
     return {
       depreciation: depTotal + leaseTotal,
       interest: interestTotal,
       maintenance: maintTotal,
       insurance: insTax,
       fuel: fuelCost,
-      total: depTotal + leaseTotal + interestTotal + maintTotal + insTax + fuelCost
+      total: depTotal + leaseTotal + interestTotal + maintTotal + insTax + fuelCost,
+      cashFlow: cashFlow
     };
   }
 
@@ -658,7 +696,17 @@
     const newCarKm = parseFloat(document.getElementById('annualKm').value) || 0;
     const carCount = parseInt(document.getElementById('currentCarCount').value);
 
-    let curTotal = { depreciation: 0, interest: 0, maintenance: 0, insurance: 0, fuel: 0, total: 0 };
+    // Päivitä UI-tekstit heijastamaan valittua pitoaikaa
+    document.querySelectorAll('.lbl-res').forEach(el => {
+      const type = el.textContent.split(':')[1] || '';
+      el.textContent = `Arvo ${months} kk kohdalla:${type}`;
+    });
+    const c1ResLbl = document.querySelector('.lbl-res-c1');
+    if (c1ResLbl) c1ResLbl.textContent = `Myyntiarvo ${months} kk kohdalla (€)`;
+    const c2ResLbl = document.querySelector('.lbl-res-c2');
+    if (c2ResLbl) c2ResLbl.textContent = `Myyntiarvo ${months} kk kohdalla (€)`;
+
+    let curTotal = { depreciation: 0, interest: 0, maintenance: 0, insurance: 0, fuel: 0, total: 0, cashFlow: 0 };
     if (carCount >= 1) {
       const c1 = calculateCurrentCar('c1', months);
       for (let k in curTotal) curTotal[k] += c1[k];
@@ -669,6 +717,7 @@
     }
     const curPerMonth = curTotal.total / months;
 
+    // Beely
     const beelyMo = parseFloat(document.getElementById('beelyMonthly').value) || 0;
     const beelyOpen = parseFloat(document.getElementById('beelyOpening').value) || 0;
     const beelyIns = (parseFloat(document.getElementById('beelyInsurance').value) || 0) * months;
@@ -683,6 +732,7 @@
     const beelyCostEst = beelyBase + beelyEstExtra;
     const beelyCostWorst = beelyBase + beelyWorstExtra;
 
+    // Osamaksu
     const carPrice = parseFloat(document.getElementById('carPrice').value) || 0;
     const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
     const balloon = Math.max(0, parseFloat(document.getElementById('balloonPayment').value) || 0);
@@ -690,12 +740,13 @@
     const loanPeriod = parseFloat(document.getElementById('loanPeriod').value) || 60;
     const loanInsTotal = (parseFloat(document.getElementById('loanInsurance').value) || 0) * months;
 
-    const sim = simulateLoanInterest(Math.max(0, carPrice - downPayment), balloon, loanRate, loanPeriod, months);
-    document.getElementById('loanPaymentBadge').textContent = `→ Rahoituksen kk-erä: ${Math.round(sim.monthlyPayment).toLocaleString('fi-FI')} €/kk`;
+    const sim = simulateLoan(Math.max(0, carPrice - downPayment), balloon, loanRate, loanPeriod, months);
+    document.getElementById('loanPaymentBadge').textContent = `→ Rahoituksen kk-erä: ${Math.round(sim.monthlyPayment).toLocaleString('fi-FI')} €/kk (Jäljellä oleva velka: ${Math.round(sim.remainingDebt).toLocaleString('fi-FI')} €)`;
 
     const lFuel = calculateFuelCost(newCarKm, months, document.getElementById('l_fuelType').value, parseFloat(document.getElementById('l_fuelCons').value) || 0, parseFloat(document.getElementById('l_fuelPrice').value) || 0);
     document.getElementById('l_fuelCostLabel').textContent = `→ Polttoainekulu: ${Math.round(lFuel / months)} €/kk (${Math.round(lFuel).toLocaleString('fi-FI')} € koko ajalta)`;
 
+    // TCO laskelmat
     const resBest = parseFloat(document.getElementById('resBest').value) || 0;
     const maintBest = ((parseFloat(document.getElementById('maintBest').value) || 0) / 12) * months;
     const loanCostBest = Math.max(0, carPrice - resBest) + sim.interestPaid + maintBest + loanInsTotal + lFuel;
@@ -707,6 +758,9 @@
     const resWorst = parseFloat(document.getElementById('resWorst').value) || 0;
     const maintWorst = ((parseFloat(document.getElementById('maintWorst').value) || 0) / 12) * months;
     const loanCostWorst = Math.max(0, carPrice - resWorst) + sim.interestPaid + maintWorst + loanInsTotal + lFuel;
+
+    // Kassavirta (Out-of-pocket)
+    const loanCashFlowEst = downPayment + sim.totalPaymentsMade + maintEst + loanInsTotal + lFuel;
 
     function updateScenarioCard(prefix, bCost, lCost) {
       document.getElementById(`curMo${prefix}`).textContent = Math.round(curPerMonth).toLocaleString('fi-FI') + ' €/kk';
@@ -771,16 +825,22 @@
         <td class="num">0 €</td>
       </tr>
       <tr class="total-row" style="color: var(--accent);">
-        <td>Kokonaiskustannus (${months} kk)</td>
+        <td>Kokonaiskustannus TCO (${months} kk)</td>
         <td class="num">${Math.round(curTotal.total).toLocaleString('fi-FI')} €</td>
         <td class="num">${Math.round(beelyCostEst).toLocaleString('fi-FI')} €</td>
         <td class="num">${Math.round(loanCostEst).toLocaleString('fi-FI')} €</td>
       </tr>
       <tr style="font-weight: 700; font-size: 1.05rem;">
-        <td>Todellinen kulu / kk</td>
+        <td>Todellinen taloudellinen kulu / kk</td>
         <td class="num" style="color: var(--current);">${Math.round(curPerMonth).toLocaleString('fi-FI')} €/kk</td>
         <td class="num" style="color: var(--beely);">${Math.round(beelyCostEst / months).toLocaleString('fi-FI')} €/kk</td>
         <td class="num" style="color: var(--loan);">${Math.round(loanCostEst / months).toLocaleString('fi-FI')} €/kk</td>
+      </tr>
+      <tr class="cashflow-row">
+        <td>Kassavirta (rahaa pois tililtä / kk)</td>
+        <td class="num">${Math.round(curTotal.cashFlow / months).toLocaleString('fi-FI')} €/kk</td>
+        <td class="num">${Math.round(beelyCostEst / months).toLocaleString('fi-FI')} €/kk</td>
+        <td class="num">${Math.round(loanCashFlowEst / months).toLocaleString('fi-FI')} €/kk</td>
       </tr>
     `;
   }
