@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Autoilun Kustannusvertailu - Nykytila vs. Uusi Hankinta</title>
+  <title>Autoilun Kustannusvertailu + Gemini AI</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -29,7 +29,6 @@
     }
 
     .container { width: 100%; max-width: 1160px; }
-
     header { text-align: center; margin-bottom: 24px; }
     h1 { font-size: 1.8rem; margin-bottom: 6px; }
     p.subtitle { color: var(--text-muted); font-size: 0.95rem; }
@@ -42,6 +41,7 @@
       margin-bottom: 20px;
     }
 
+    .card.ai-card { border: 1px dashed var(--accent); background: rgba(56, 189, 248, 0.04); }
     .card.current-card { border-top: 4px solid var(--current); }
     .card.beely-card { border-top: 4px solid var(--beely); }
     .card.loan-card { border-top: 4px solid var(--loan); }
@@ -53,30 +53,11 @@
       margin-bottom: 20px;
     }
 
-    h2 {
-      font-size: 1.15rem;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .sub-head {
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--accent);
-      margin: 14px 0 8px 0;
-      display: block;
-    }
+    h2 { font-size: 1.15rem; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
+    .sub-head { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); margin: 14px 0 8px 0; display: block; }
 
     .input-group { margin-bottom: 10px; }
-    label {
-      display: block;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 3px;
-    }
+    label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 3px; }
 
     input, select {
       width: 100%;
@@ -90,17 +71,8 @@
 
     input:focus, select:focus { outline: none; border-color: var(--accent); }
 
-    .row-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .row-3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-    }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
 
     .fuel-box, .finance-box {
       background: var(--card-sub);
@@ -111,12 +83,7 @@
       margin-bottom: 12px;
     }
 
-    .fuel-result, .info-tag {
-      font-size: 0.8rem;
-      color: var(--accent);
-      margin-top: 4px;
-      font-weight: 500;
-    }
+    .fuel-result, .info-tag { font-size: 0.8rem; color: var(--accent); margin-top: 4px; font-weight: 500; }
 
     .scenario-grid {
       display: grid;
@@ -125,56 +92,32 @@
       margin-bottom: 20px;
     }
 
-    .scenario-card {
-      background: var(--card-bg);
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      padding: 16px;
-    }
+    .scenario-card { background: var(--card-bg); border-radius: 10px; border: 1px solid var(--border); padding: 16px; }
+    .scenario-card.active { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+    .scenario-card h3 { font-size: 0.95rem; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
 
-    .scenario-card.active {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px var(--accent);
-    }
-
-    .scenario-card h3 {
-      font-size: 0.95rem;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .badge-diff {
-      font-size: 0.75rem;
-      padding: 3px 8px;
-      border-radius: 999px;
-      font-weight: 600;
-    }
-
-    .scenario-stat {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      padding: 4px 0;
-      border-bottom: 1px dashed var(--border);
-    }
+    .badge-diff { font-size: 0.75rem; padding: 3px 8px; border-radius: 999px; font-weight: 600; }
+    .scenario-stat { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 4px 0; border-bottom: 1px dashed var(--border); }
     .scenario-stat:last-of-type { border-bottom: none; }
 
     .table-container { overflow-x: auto; margin-top: 10px; }
     table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
-    th, td {
-      padding: 10px 12px;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-    }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
     th { color: var(--text-muted); font-weight: 500; }
     td.num, th.num { text-align: right; }
-    tr.total-row td {
-      font-weight: 700;
-      font-size: 0.98rem;
-      border-bottom: none;
+    tr.total-row td { font-weight: 700; font-size: 0.98rem; border-bottom: none; }
+
+    .btn-ai {
+      background: var(--accent);
+      color: #0f172a;
+      border: none;
+      padding: 9px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
     }
+    .btn-ai:hover { opacity: 0.9; }
   </style>
 </head>
 <body>
@@ -182,8 +125,26 @@
 <div class="container">
   <header>
     <h1>Autoilun Kokonaiskustannusvertailu</h1>
-    <p class="subtitle">Nykytila (0–2 autoa, omistus/osamaksu/leasing) vs. Beely vs. Osamaksu</p>
+    <p class="subtitle">Nykytila vs. Beely vs. Osamaksu tekoälypohjaisella arvonmäärityksellä</p>
   </header>
+
+  <div class="card ai-card">
+    <span class="sub-head" style="margin-top:0;">Gemini AI - Automaattinen arvon aleneman ja kulutuksen analyysi</span>
+    <div class="row-2">
+      <div class="input-group">
+        <label for="geminiApiKey">Gemini API-avain (tallentuu vain selaimeesi):</label>
+        <input type="password" id="geminiApiKey" placeholder="AIzaSy...">
+      </div>
+      <div class="input-group">
+        <label for="carPrompt">Auton vapaamuotoiset tiedot:</label>
+        <input type="text" id="carPrompt" placeholder="esim. Škoda Enyaq iV 80 2022, ajettu 50 tkm, pyynti 33000">
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap: 14px; margin-top: 4px;">
+      <button type="button" class="btn-ai" id="btnAnalyze">Arvioi arvonalenema ja kulut</button>
+      <span id="aiStatus" style="font-size: 0.85rem; color: var(--text-muted);"></span>
+    </div>
+  </div>
 
   <div class="card">
     <div class="row-2">
@@ -210,217 +171,147 @@
       </div>
     </div>
 
-    <div id="currentCarsContainer">
-      <div id="curCar1Card" class="card" style="background: var(--card-sub); border: 1px solid var(--border); margin-bottom: 14px;">
-        <h3 style="color: var(--accent); font-size: 1rem; margin-bottom: 12px;">Nykyinen Auto 1</h3>
-        
-        <div class="row-3">
-          <div class="input-group">
-            <label for="c1_ownership">Hankintamuoto</label>
-            <select id="c1_ownership">
-              <option value="owned" selected>Omistettu (velaton)</option>
-              <option value="loan">Osamaksu / Rahoitus</option>
-              <option value="lease">Yksityisleasing / Beely</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label for="c1_annualKm">Ajomäärä (km/v)</label>
-            <input type="number" id="c1_annualKm" value="12000" step="1000">
-          </div>
-          <div class="input-group">
-            <label for="c1_insTaxMo">Vakuutus + vero (€/kk)</label>
-            <input type="number" id="c1_insTaxMo" value="75">
-          </div>
+    <div id="curCar1Card" class="card" style="background: var(--card-sub); border: 1px solid var(--border); margin-bottom: 14px;">
+      <h3 style="color: var(--accent); font-size: 1rem; margin-bottom: 12px;">Nykyinen Auto 1</h3>
+      <div class="row-3">
+        <div class="input-group">
+          <label for="c1_ownership">Hankintamuoto</label>
+          <select id="c1_ownership">
+            <option value="owned" selected>Omistettu (velaton)</option>
+            <option value="loan">Osamaksu / Rahoitus</option>
+            <option value="lease">Yksityisleasing / Beely</option>
+          </select>
         </div>
-
-        <div id="c1_ownedFields" class="finance-box">
-          <div class="input-group">
-            <label for="c1_depreciationMo">Arvioitu arvonalenema (€/kk)</label>
-            <input type="number" id="c1_depreciationMo" value="180">
-          </div>
+        <div class="input-group">
+          <label for="c1_annualKm">Ajomäärä (km/v)</label>
+          <input type="number" id="c1_annualKm" value="12000" step="1000">
         </div>
-
-        <div id="c1_loanFields" class="finance-box" style="display: none;">
-          <div class="row-3">
-            <div class="input-group">
-              <label for="c1_price">Ostohinta / Arvo alussa (€)</label>
-              <input type="number" id="c1_price" value="18000">
-            </div>
-            <div class="input-group">
-              <label for="c1_down">Käsiraha (€)</label>
-              <input type="number" id="c1_down" value="2000">
-            </div>
-            <div class="input-group">
-              <label for="c1_balloon">Viimeinen erä (€)</label>
-              <input type="number" id="c1_balloon" value="5000">
-            </div>
-          </div>
-          <div class="row-3">
-            <div class="input-group">
-              <label for="c1_rate">Korko (%)</label>
-              <input type="number" id="c1_rate" value="4.5" step="0.1">
-            </div>
-            <div class="input-group">
-              <label for="c1_period">Laina-aika (kk)</label>
-              <input type="number" id="c1_period" value="60">
-            </div>
-            <div class="input-group">
-              <label for="c1_res">Arvioitu myyntihinta lopussa (€)</label>
-              <input type="number" id="c1_res" value="12000">
-            </div>
-          </div>
-          <div class="info-tag" id="c1_loanInfo">-</div>
-        </div>
-
-        <div id="c1_leaseFields" class="finance-box" style="display: none;">
-          <div class="row-2">
-            <div class="input-group">
-              <label for="c1_leaseMo">Leasing / Kiinteä kk-erä (€/kk)</label>
-              <input type="number" id="c1_leaseMo" value="420">
-            </div>
-            <div class="input-group">
-              <label for="c1_leaseIncludesMaint">Sisältääkö huollot?</label>
-              <select id="c1_leaseIncludesMaint">
-                <option value="yes" selected>Kyllä (huollot 0 €)</option>
-                <option value="no">Ei (huollot erikseen)</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="input-group" id="c1_maintGroup">
-          <label for="c1_maintYear">Huollot + korjaukset (€/v)</label>
-          <input type="number" id="c1_maintYear" value="800">
-        </div>
-
-        <div class="fuel-box">
-          <div class="row-3">
-            <div class="input-group">
-              <label for="c1_fuelType">Käyttövoima</label>
-              <select id="c1_fuelType">
-                <option value="diesel" selected>Diesel</option>
-                <option value="bensa">Bensiini</option>
-                <option value="sahko">Sähkö</option>
-                <option value="plugin">Plug-in hybridi</option>
-              </select>
-            </div>
-            <div class="input-group">
-              <label for="c1_fuelCons" id="c1_fuelConsLabel">Kulutus (l/100km)</label>
-              <input type="number" id="c1_fuelCons" value="6.5" step="0.1">
-            </div>
-            <div class="input-group">
-              <label for="c1_fuelPrice" id="c1_fuelPriceLabel">Hinta (€/l)</label>
-              <input type="number" id="c1_fuelPrice" value="1.85" step="0.01">
-            </div>
-          </div>
-          <div class="fuel-result" id="c1_fuelCostLabel">-</div>
+        <div class="input-group">
+          <label for="c1_insTaxMo">Vakuutus + vero (€/kk)</label>
+          <input type="number" id="c1_insTaxMo" value="75">
         </div>
       </div>
 
-      <div id="curCar2Card" class="card" style="background: var(--card-sub); border: 1px solid var(--border); margin-bottom: 14px; display: none;">
-        <h3 style="color: var(--accent); font-size: 1rem; margin-bottom: 12px;">Nykyinen Auto 2</h3>
-        
+      <div id="c1_ownedFields" class="finance-box">
+        <div class="input-group">
+          <label for="c1_depreciationMo">Arvioitu arvonalenema (€/kk)</label>
+          <input type="number" id="c1_depreciationMo" value="180">
+        </div>
+      </div>
+
+      <div id="c1_loanFields" class="finance-box" style="display: none;">
+        <div class="row-3">
+          <div class="input-group"><label for="c1_price">Ostohinta (€)</label><input type="number" id="c1_price" value="18000"></div>
+          <div class="input-group"><label for="c1_down">Käsiraha (€)</label><input type="number" id="c1_down" value="2000"></div>
+          <div class="input-group"><label for="c1_balloon">Viimeinen erä (€)</label><input type="number" id="c1_balloon" value="5000"></div>
+        </div>
+        <div class="row-3">
+          <div class="input-group"><label for="c1_rate">Korko (%)</label><input type="number" id="c1_rate" value="4.5" step="0.1"></div>
+          <div class="input-group"><label for="c1_period">Laina-aika (kk)</label><input type="number" id="c1_period" value="60"></div>
+          <div class="input-group"><label for="c1_res">Arvioitu myyntihinta lopussa (€)</label><input type="number" id="c1_res" value="12000"></div>
+        </div>
+        <div class="info-tag" id="c1_loanInfo">-</div>
+      </div>
+
+      <div id="c1_leaseFields" class="finance-box" style="display: none;">
+        <div class="row-2">
+          <div class="input-group"><label for="c1_leaseMo">Leasing kk-erä (€/kk)</label><input type="number" id="c1_leaseMo" value="420"></div>
+          <div class="input-group">
+            <label for="c1_leaseIncludesMaint">Sisältääkö huollot?</label>
+            <select id="c1_leaseIncludesMaint"><option value="yes" selected>Kyllä (0 €)</option><option value="no">Ei</option></select>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-group" id="c1_maintGroup">
+        <label for="c1_maintYear">Huollot + korjaukset (€/v)</label>
+        <input type="number" id="c1_maintYear" value="800">
+      </div>
+
+      <div class="fuel-box">
         <div class="row-3">
           <div class="input-group">
-            <label for="c2_ownership">Hankintamuoto</label>
-            <select id="c2_ownership">
-              <option value="owned">Omistettu (velaton)</option>
-              <option value="loan">Osamaksu / Rahoitus</option>
-              <option value="lease" selected>Yksityisleasing / Beely</option>
+            <label for="c1_fuelType">Käyttövoima</label>
+            <select id="c1_fuelType">
+              <option value="diesel" selected>Diesel</option>
+              <option value="bensa">Bensiini</option>
+              <option value="sahko">Sähkö</option>
+              <option value="plugin">Plug-in</option>
             </select>
           </div>
+          <div class="input-group"><label for="c1_fuelCons" id="c1_fuelConsLabel">Kulutus (l/100km)</label><input type="number" id="c1_fuelCons" value="6.5" step="0.1"></div>
+          <div class="input-group"><label for="c1_fuelPrice" id="c1_fuelPriceLabel">Hinta (€/l)</label><input type="number" id="c1_fuelPrice" value="1.85" step="0.01"></div>
+        </div>
+        <div class="fuel-result" id="c1_fuelCostLabel">-</div>
+      </div>
+    </div>
+
+    <div id="curCar2Card" class="card" style="background: var(--card-sub); border: 1px solid var(--border); margin-bottom: 14px; display: none;">
+      <h3 style="color: var(--accent); font-size: 1rem; margin-bottom: 12px;">Nykyinen Auto 2</h3>
+      <div class="row-3">
+        <div class="input-group">
+          <label for="c2_ownership">Hankintamuoto</label>
+          <select id="c2_ownership">
+            <option value="owned">Omistettu (velaton)</option>
+            <option value="loan">Osamaksu / Rahoitus</option>
+            <option value="lease" selected>Yksityisleasing / Beely</option>
+          </select>
+        </div>
+        <div class="input-group"><label for="c2_annualKm">Ajomäärä (km/v)</label><input type="number" id="c2_annualKm" value="15000" step="1000"></div>
+        <div class="input-group"><label for="c2_insTaxMo">Vakuutus + vero (€/kk)</label><input type="number" id="c2_insTaxMo" value="80"></div>
+      </div>
+
+      <div id="c2_ownedFields" class="finance-box" style="display: none;">
+        <div class="input-group">
+          <label for="c2_depreciationMo">Arvioitu arvonalenema (€/kk)</label>
+          <input type="number" id="c2_depreciationMo" value="250">
+        </div>
+      </div>
+
+      <div id="c2_loanFields" class="finance-box" style="display: none;">
+        <div class="row-3">
+          <div class="input-group"><label for="c2_price">Ostohinta (€)</label><input type="number" id="c2_price" value="25000"></div>
+          <div class="input-group"><label for="c2_down">Käsiraha (€)</label><input type="number" id="c2_down" value="2500"></div>
+          <div class="input-group"><label for="c2_balloon">Viimeinen erä (€)</label><input type="number" id="c2_balloon" value="10000"></div>
+        </div>
+        <div class="row-3">
+          <div class="input-group"><label for="c2_rate">Korko (%)</label><input type="number" id="c2_rate" value="4.5" step="0.1"></div>
+          <div class="input-group"><label for="c2_period">Laina-aika (kk)</label><input type="number" id="c2_period" value="60"></div>
+          <div class="input-group"><label for="c2_res">Arvioitu myyntihinta lopussa (€)</label><input type="number" id="c2_res" value="16000"></div>
+        </div>
+        <div class="info-tag" id="c2_loanInfo">-</div>
+      </div>
+
+      <div id="c2_leaseFields" class="finance-box">
+        <div class="row-2">
+          <div class="input-group"><label for="c2_leaseMo">Leasing kk-erä (€/kk)</label><input type="number" id="c2_leaseMo" value="399"></div>
           <div class="input-group">
-            <label for="c2_annualKm">Ajomäärä (km/v)</label>
-            <input type="number" id="c2_annualKm" value="15000" step="1000">
+            <label for="c2_leaseIncludesMaint">Sisältääkö huollot?</label>
+            <select id="c2_leaseIncludesMaint"><option value="yes" selected>Kyllä (0 €)</option><option value="no">Ei</option></select>
           </div>
+        </div>
+      </div>
+
+      <div class="input-group" id="c2_maintGroup" style="display: none;">
+        <label for="c2_maintYear">Huollot + korjaukset (€/v)</label>
+        <input type="number" id="c2_maintYear" value="600">
+      </div>
+
+      <div class="fuel-box">
+        <div class="row-3">
           <div class="input-group">
-            <label for="c2_insTaxMo">Vakuutus + vero (€/kk)</label>
-            <input type="number" id="c2_insTaxMo" value="80">
+            <label for="c2_fuelType">Käyttövoima</label>
+            <select id="c2_fuelType">
+              <option value="sahko" selected>Sähkö</option>
+              <option value="bensa">Bensiini</option>
+              <option value="diesel">Diesel</option>
+              <option value="plugin">Plug-in</option>
+            </select>
           </div>
+          <div class="input-group"><label for="c2_fuelCons" id="c2_fuelConsLabel">Kulutus (kWh/100km)</label><input type="number" id="c2_fuelCons" value="18.5" step="0.1"></div>
+          <div class="input-group"><label for="c2_fuelPrice" id="c2_fuelPriceLabel">Hinta (€/kWh)</label><input type="number" id="c2_fuelPrice" value="0.20" step="0.01"></div>
         </div>
-
-        <div id="c2_ownedFields" class="finance-box" style="display: none;">
-          <div class="input-group">
-            <label for="c2_depreciationMo">Arvioitu arvonalenema (€/kk)</label>
-            <input type="number" id="c2_depreciationMo" value="250">
-          </div>
-        </div>
-
-        <div id="c2_loanFields" class="finance-box" style="display: none;">
-          <div class="row-3">
-            <div class="input-group">
-              <label for="c2_price">Ostohinta / Arvo alussa (€)</label>
-              <input type="number" id="c2_price" value="25000">
-            </div>
-            <div class="input-group">
-              <label for="c2_down">Käsiraha (€)</label>
-              <input type="number" id="c2_down" value="2500">
-            </div>
-            <div class="input-group">
-              <label for="c2_balloon">Viimeinen erä (€)</label>
-              <input type="number" id="c2_balloon" value="10000">
-            </div>
-          </div>
-          <div class="row-3">
-            <div class="input-group">
-              <label for="c2_rate">Korko (%)</label>
-              <input type="number" id="c2_rate" value="4.5" step="0.1">
-            </div>
-            <div class="input-group">
-              <label for="c2_period">Laina-aika (kk)</label>
-              <input type="number" id="c2_period" value="60">
-            </div>
-            <div class="input-group">
-              <label for="c2_res">Arvioitu myyntihinta lopussa (€)</label>
-              <input type="number" id="c2_res" value="16000">
-            </div>
-          </div>
-          <div class="info-tag" id="c2_loanInfo">-</div>
-        </div>
-
-        <div id="c2_leaseFields" class="finance-box">
-          <div class="row-2">
-            <div class="input-group">
-              <label for="c2_leaseMo">Leasing / Kiinteä kk-erä (€/kk)</label>
-              <input type="number" id="c2_leaseMo" value="399">
-            </div>
-            <div class="input-group">
-              <label for="c2_leaseIncludesMaint">Sisältääkö huollot?</label>
-              <select id="c2_leaseIncludesMaint">
-                <option value="yes" selected>Kyllä (huollot 0 €)</option>
-                <option value="no">Ei (huollot erikseen)</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="input-group" id="c2_maintGroup" style="display: none;">
-          <label for="c2_maintYear">Huollot + korjaukset (€/v)</label>
-          <input type="number" id="c2_maintYear" value="600">
-        </div>
-
-        <div class="fuel-box">
-          <div class="row-3">
-            <div class="input-group">
-              <label for="c2_fuelType">Käyttövoima</label>
-              <select id="c2_fuelType">
-                <option value="sahko" selected>Sähkö</option>
-                <option value="bensa">Bensiini</option>
-                <option value="diesel">Diesel</option>
-                <option value="plugin">Plug-in hybridi</option>
-              </select>
-            </div>
-            <div class="input-group">
-              <label for="c2_fuelCons" id="c2_fuelConsLabel">Kulutus (kWh/100km)</label>
-              <input type="number" id="c2_fuelCons" value="18.5" step="0.1">
-            </div>
-            <div class="input-group">
-              <label for="c2_fuelPrice" id="c2_fuelPriceLabel">Hinta (€/kWh)</label>
-              <input type="number" id="c2_fuelPrice" value="0.20" step="0.01">
-            </div>
-          </div>
-          <div class="fuel-result" id="c2_fuelCostLabel">-</div>
-        </div>
+        <div class="fuel-result" id="c2_fuelCostLabel">-</div>
       </div>
     </div>
   </div>
@@ -428,19 +319,10 @@
   <div class="grid-2">
     <div class="card beely-card">
       <h2 style="color: var(--beely)">Beely (Vaihtoehto A)</h2>
-      <div class="input-group">
-        <label for="beelyMonthly">Kuukausimaksu sis. km (€/kk)</label>
-        <input type="number" id="beelyMonthly" value="389">
-      </div>
+      <div class="input-group"><label for="beelyMonthly">Kuukausimaksu sis. km (€/kk)</label><input type="number" id="beelyMonthly" value="389"></div>
       <div class="row-2">
-        <div class="input-group">
-          <label for="beelyOpening">Avausmaksu (€)</label>
-          <input type="number" id="beelyOpening" value="0">
-        </div>
-        <div class="input-group">
-          <label for="beelyInsurance">Vakuutus + vero (€/kk)</label>
-          <input type="number" id="beelyInsurance" value="65">
-        </div>
+        <div class="input-group"><label for="beelyOpening">Avausmaksu (€)</label><input type="number" id="beelyOpening" value="0"></div>
+        <div class="input-group"><label for="beelyInsurance">Vakuutus + vero (€/kk)</label><input type="number" id="beelyInsurance" value="65"></div>
       </div>
 
       <div class="fuel-box">
@@ -451,59 +333,32 @@
               <option value="bensa" selected>Bensiini</option>
               <option value="diesel">Diesel</option>
               <option value="sahko">Sähkö</option>
-              <option value="plugin">Plug-in hybridi</option>
+              <option value="plugin">Plug-in</option>
             </select>
           </div>
-          <div class="input-group">
-            <label for="b_fuelCons" id="b_fuelConsLabel">Kulutus (l/100km)</label>
-            <input type="number" id="b_fuelCons" value="5.8" step="0.1">
-          </div>
-          <div class="input-group">
-            <label for="b_fuelPrice" id="b_fuelPriceLabel">Hinta (€/l)</label>
-            <input type="number" id="b_fuelPrice" value="1.85" step="0.01">
-          </div>
+          <div class="input-group"><label for="b_fuelCons" id="b_fuelConsLabel">Kulutus (l/100km)</label><input type="number" id="b_fuelCons" value="5.8" step="0.1"></div>
+          <div class="input-group"><label for="b_fuelPrice" id="b_fuelPriceLabel">Hinta (€/l)</label><input type="number" id="b_fuelPrice" value="1.85" step="0.01"></div>
         </div>
         <div class="fuel-result" id="b_fuelCostLabel">-</div>
       </div>
 
       <span class="sub-head">Sopimuksen päättymiskulut</span>
       <div class="row-2">
-        <div class="input-group">
-          <label for="beelyEstReturn">Est: Palautuskulut (€)</label>
-          <input type="number" id="beelyEstReturn" value="150">
-        </div>
-        <div class="input-group">
-          <label for="beelyWorstReturn">Worst: Vauriot/ylikm (€)</label>
-          <input type="number" id="beelyWorstReturn" value="800">
-        </div>
+        <div class="input-group"><label for="beelyEstReturn">Est: Palautuskulut (€)</label><input type="number" id="beelyEstReturn" value="150"></div>
+        <div class="input-group"><label for="beelyWorstReturn">Worst: Vauriot/ylikm (€)</label><input type="number" id="beelyWorstReturn" value="800"></div>
       </div>
     </div>
 
     <div class="card loan-card">
       <h2 style="color: var(--loan)">Osamaksu (Vaihtoehto B)</h2>
       <div class="row-2">
-        <div class="input-group">
-          <label for="carPrice">Ostohinta (€)</label>
-          <input type="number" id="carPrice" value="21000">
-        </div>
-        <div class="input-group">
-          <label for="downPayment">Käsiraha (€)</label>
-          <input type="number" id="downPayment" value="2000">
-        </div>
+        <div class="input-group"><label for="carPrice">Ostohinta (€)</label><input type="number" id="carPrice" value="21000"></div>
+        <div class="input-group"><label for="downPayment">Käsiraha (€)</label><input type="number" id="downPayment" value="2000"></div>
       </div>
       <div class="row-3">
-        <div class="input-group">
-          <label for="balloonPayment">Viimeinen erä (€)</label>
-          <input type="number" id="balloonPayment" value="8000">
-        </div>
-        <div class="input-group">
-          <label for="loanRate">Korko (% todellinen)</label>
-          <input type="number" id="loanRate" value="4.9" step="0.1">
-        </div>
-        <div class="input-group">
-          <label for="loanPeriod">Laina-aika (kk)</label>
-          <input type="number" id="loanPeriod" value="60">
-        </div>
+        <div class="input-group"><label for="balloonPayment">Viimeinen erä (€)</label><input type="number" id="balloonPayment" value="8000"></div>
+        <div class="input-group"><label for="loanRate">Korko (% todellinen)</label><input type="number" id="loanRate" value="4.9" step="0.1"></div>
+        <div class="input-group"><label for="loanPeriod">Laina-aika (kk)</label><input type="number" id="loanPeriod" value="60"></div>
       </div>
       <div id="loanPaymentBadge" class="info-tag">Lasketaan lainaerää...</div>
 
@@ -520,51 +375,27 @@
               <option value="bensa" selected>Bensiini</option>
               <option value="diesel">Diesel</option>
               <option value="sahko">Sähkö</option>
-              <option value="plugin">Plug-in hybridi</option>
+              <option value="plugin">Plug-in</option>
             </select>
           </div>
-          <div class="input-group">
-            <label for="l_fuelCons" id="l_fuelConsLabel">Kulutus (l/100km)</label>
-            <input type="number" id="l_fuelCons" value="5.8" step="0.1">
-          </div>
-          <div class="input-group">
-            <label for="l_fuelPrice" id="l_fuelPriceLabel">Hinta (€/l)</label>
-            <input type="number" id="l_fuelPrice" value="1.85" step="0.01">
-          </div>
+          <div class="input-group"><label for="l_fuelCons" id="l_fuelConsLabel">Kulutus (l/100km)</label><input type="number" id="l_fuelCons" value="5.8" step="0.1"></div>
+          <div class="input-group"><label for="l_fuelPrice" id="l_fuelPriceLabel">Hinta (€/l)</label><input type="number" id="l_fuelPrice" value="1.85" step="0.01"></div>
         </div>
         <div class="fuel-result" id="l_fuelCostLabel">-</div>
       </div>
 
-      <span class="sub-head">Skenaariomuuttujat</span>
+      <span class="sub-head">Skenaariomuuttujat (Jäännösarvo & Huollot)</span>
       <div class="row-2">
-        <div class="input-group">
-          <label for="resBest">Jäännösarvo: Best (€)</label>
-          <input type="number" id="resBest" value="16500">
-        </div>
-        <div class="input-group">
-          <label for="maintBest">Huollot: Best (€/v)</label>
-          <input type="number" id="maintBest" value="400">
-        </div>
+        <div class="input-group"><label for="resBest">Jäännösarvo: Best (€)</label><input type="number" id="resBest" value="16500"></div>
+        <div class="input-group"><label for="maintBest">Huollot: Best (€/v)</label><input type="number" id="maintBest" value="400"></div>
       </div>
       <div class="row-2">
-        <div class="input-group">
-          <label for="resEst">Jäännösarvo: Est (€)</label>
-          <input type="number" id="resEst" value="15200">
-        </div>
-        <div class="input-group">
-          <label for="maintEst">Huollot: Est (€/v)</label>
-          <input type="number" id="maintEst" value="800">
-        </div>
+        <div class="input-group"><label for="resEst">Jäännösarvo: Est (€)</label><input type="number" id="resEst" value="15200"></div>
+        <div class="input-group"><label for="maintEst">Huollot: Est (€/v)</label><input type="number" id="maintEst" value="800"></div>
       </div>
       <div class="row-2">
-        <div class="input-group">
-          <label for="resWorst">Jäännösarvo: Worst (€)</label>
-          <input type="number" id="resWorst" value="13500">
-        </div>
-        <div class="input-group">
-          <label for="maintWorst">Huollot: Worst (€/v)</label>
-          <input type="number" id="maintWorst" value="1800">
-        </div>
+        <div class="input-group"><label for="resWorst">Jäännösarvo: Worst (€)</label><input type="number" id="resWorst" value="13500"></div>
+        <div class="input-group"><label for="maintWorst">Huollot: Worst (€/v)</label><input type="number" id="maintWorst" value="1800"></div>
       </div>
     </div>
   </div>
@@ -610,14 +441,86 @@
             <th class="num">Osamaksu (Est)</th>
           </tr>
         </thead>
-        <tbody id="tableBody">
-          </tbody>
+        <tbody id="tableBody"></tbody>
       </table>
     </div>
   </div>
 </div>
 
 <script>
+  // localStorage avaimen säilyttämiseksi
+  const savedKey = localStorage.getItem('gemini_api_key');
+  if (savedKey) document.getElementById('geminiApiKey').value = savedKey;
+
+  document.getElementById('geminiApiKey').addEventListener('change', (e) => {
+    localStorage.setItem('gemini_api_key', e.target.value.trim());
+  });
+
+  // GEMINI API KUTSU
+  document.getElementById('btnAnalyze').addEventListener('click', async () => {
+    const apiKey = document.getElementById('geminiApiKey').value.trim();
+    const promptText = document.getElementById('carPrompt').value.trim();
+    const months = document.getElementById('periodMonths').value || 24;
+    const km = document.getElementById('annualKm').value || 15000;
+    const status = document.getElementById('aiStatus');
+
+    if (!apiKey) {
+      status.textContent = 'Syötä ensin Gemini API-avain.';
+      status.style.color = '#f87171';
+      return;
+    }
+    if (!promptText) {
+      status.textContent = 'Kirjoita auton tiedot kenttään.';
+      status.style.color = '#f87171';
+      return;
+    }
+
+    status.textContent = 'Lasketaan auton markkina-arvoa ja arvonalenemaa...';
+    status.style.color = 'var(--accent)';
+
+    const systemPrompt = `Olet Suomen automarkkinan ja arvonaleneman asiantuntija. Arvioi auton ostohinta, realistinen jäännösarvo pitoajan jälkeen eri skenaarioissa (Best/Est/Worst), huoltokulut ja kulutus Suomen olosuhteissa. Palauta VAIN validia JSONia täsmälleen tässä muodossa ilman koodilohkoja tai ylimääräistä tekstiä:
+{"carPrice": number, "resBest": number, "resEst": number, "resWorst": number, "maintYearEst": number, "fuelType": "bensa" | "diesel" | "sahko" | "plugin", "fuelCons": number}`;
+
+    const userContent = `Auto: "${promptText}". Pitoaika: ${months} kk, arvioitu ajomäärä: ${km} km/v.`;
+
+    try {
+      const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ role: 'user', parts: [{ text: userContent }] }],
+          systemInstruction: { parts: [{ text: systemPrompt }] },
+          generationConfig: { responseMimeType: 'application/json' }
+        })
+      });
+
+      const jsonResp = await resp.json();
+      if (jsonResp.error) throw new Error(jsonResp.error.message);
+
+      const parsed = JSON.parse(jsonResp.candidates[0].content.parts[0].text);
+
+      if (parsed.carPrice) document.getElementById('carPrice').value = parsed.carPrice;
+      if (parsed.resBest) document.getElementById('resBest').value = parsed.resBest;
+      if (parsed.resEst) document.getElementById('resEst').value = parsed.resEst;
+      if (parsed.resWorst) document.getElementById('resWorst').value = parsed.resWorst;
+      if (parsed.maintYearEst) document.getElementById('maintEst').value = parsed.maintYearEst;
+
+      if (parsed.fuelType) {
+        document.getElementById('l_fuelType').value = parsed.fuelType;
+        document.getElementById('l_fuelCons').value = parsed.fuelCons;
+        document.getElementById('l_fuelType').dispatchEvent(new Event('change'));
+      }
+
+      calculate();
+      status.textContent = 'Arviot täytetty osamaksukenttiin!';
+      status.style.color = '#10b981';
+    } catch (err) {
+      status.textContent = 'Virhe haussa: ' + err.message;
+      status.style.color = '#f87171';
+    }
+  });
+
+  // Laskentalogiikka
   function calculateLoanAnnuity(principal, balloon, annualRatePct, periodMonths) {
     const r = (annualRatePct / 100) / 12;
     if (r > 0) {
@@ -645,9 +548,8 @@
 
   function calculateFuelCost(kmPerYear, months, type, cons, price) {
     const totalKm = (kmPerYear / 12) * months;
-    if (type === 'sahko') {
-      return (totalKm / 100) * cons * price;
-    } else if (type === 'plugin') {
+    if (type === 'sahko') return (totalKm / 100) * cons * price;
+    if (type === 'plugin') {
       const halfKm = totalKm / 2;
       return ((halfKm / 100) * 18 * 0.20) + ((halfKm / 100) * cons * price);
     }
@@ -662,7 +564,6 @@
       document.getElementById(`${prefix}_loanFields`).style.display = val === 'loan' ? 'block' : 'none';
       document.getElementById(`${prefix}_leaseFields`).style.display = val === 'lease' ? 'block' : 'none';
 
-      // Jos leasing sisältää huollot, piilotetaan huoltokenttä
       if (val === 'lease') {
         const incMaint = document.getElementById(`${prefix}_leaseIncludesMaint`).value === 'yes';
         document.getElementById(`${prefix}_maintGroup`).style.display = incMaint ? 'none' : 'block';
@@ -684,16 +585,9 @@
 
     const updateLabels = () => {
       const t = typeSelect.value;
-      if (t === 'sahko') {
-        consLabel.textContent = 'Kulutus (kWh/100km)';
-        priceLabel.textContent = 'Hinta (€/kWh)';
-      } else if (t === 'plugin') {
-        consLabel.textContent = 'Bensankulutus (l/100km)';
-        priceLabel.textContent = 'Bensan hinta (€/l)';
-      } else {
-        consLabel.textContent = 'Kulutus (l/100km)';
-        priceLabel.textContent = 'Hinta (€/l)';
-      }
+      if (t === 'sahko') { consLabel.textContent = 'Kulutus (kWh/100km)'; priceLabel.textContent = 'Hinta (€/kWh)'; }
+      else if (t === 'plugin') { consLabel.textContent = 'Bensankulutus (l/100km)'; priceLabel.textContent = 'Bensan hinta (€/l)'; }
+      else { consLabel.textContent = 'Kulutus (l/100km)'; priceLabel.textContent = 'Hinta (€/l)'; }
     };
 
     typeSelect.addEventListener('change', () => {
@@ -708,7 +602,6 @@
     updateLabels();
   }
 
-  // Nykytilan autojen määrän vaihto
   document.getElementById('currentCarCount').addEventListener('change', (e) => {
     const val = parseInt(e.target.value);
     document.getElementById('curCar1Card').style.display = val >= 1 ? 'block' : 'none';
@@ -716,22 +609,15 @@
     calculate();
   });
 
-  // Laskentalogiikka yhdelle nykyautolle
   function calculateCurrentCar(prefix, months) {
     const ownership = document.getElementById(`${prefix}_ownership`).value;
     const km = parseFloat(document.getElementById(`${prefix}_annualKm`).value) || 0;
     const insTax = (parseFloat(document.getElementById(`${prefix}_insTaxMo`).value) || 0) * months;
-    
     let maintYear = parseFloat(document.getElementById(`${prefix}_maintYear`).value) || 0;
-    if (ownership === 'lease' && document.getElementById(`${prefix}_leaseIncludesMaint`).value === 'yes') {
-      maintYear = 0;
-    }
+    if (ownership === 'lease' && document.getElementById(`${prefix}_leaseIncludesMaint`).value === 'yes') maintYear = 0;
     const maintTotal = (maintYear / 12) * months;
 
-    let depTotal = 0;
-    let interestTotal = 0;
-    let leaseTotal = 0;
-
+    let depTotal = 0, interestTotal = 0, leaseTotal = 0;
     if (ownership === 'owned') {
       depTotal = (parseFloat(document.getElementById(`${prefix}_depreciationMo`).value) || 0) * months;
     } else if (ownership === 'lease') {
@@ -743,14 +629,10 @@
       const rate = parseFloat(document.getElementById(`${prefix}_rate`).value) || 0;
       const period = parseFloat(document.getElementById(`${prefix}_period`).value) || 60;
       const res = parseFloat(document.getElementById(`${prefix}_res`).value) || 0;
-      
-      const principal = Math.max(0, price - down);
-      const sim = simulateLoanInterest(principal, balloon, rate, period, months);
+      const sim = simulateLoanInterest(Math.max(0, price - down), balloon, rate, period, months);
       interestTotal = sim.interestPaid;
       depTotal = Math.max(0, price - res);
-      
-      document.getElementById(`${prefix}_loanInfo`).textContent = 
-        `→ Lainan kk-erä: ${Math.round(sim.monthlyPayment).toLocaleString('fi-FI')} €/kk (rahoitusosuus)`;
+      document.getElementById(`${prefix}_loanInfo`).textContent = `→ Lainan kk-erä: ${Math.round(sim.monthlyPayment).toLocaleString('fi-FI')} €/kk`;
     }
 
     const fuelType = document.getElementById(`${prefix}_fuelType`).value;
@@ -761,15 +643,13 @@
     document.getElementById(`${prefix}_fuelCostLabel`).textContent = 
       `→ Polttoainekulu: ${Math.round(fuelCost / months)} €/kk (${Math.round(fuelCost).toLocaleString('fi-FI')} € koko ajalta)`;
 
-    const totalCost = depTotal + leaseTotal + interestTotal + maintTotal + insTax + fuelCost;
-
     return {
       depreciation: depTotal + leaseTotal,
       interest: interestTotal,
       maintenance: maintTotal,
       insurance: insTax,
       fuel: fuelCost,
-      total: totalCost
+      total: depTotal + leaseTotal + interestTotal + maintTotal + insTax + fuelCost
     };
   }
 
@@ -778,7 +658,6 @@
     const newCarKm = parseFloat(document.getElementById('annualKm').value) || 0;
     const carCount = parseInt(document.getElementById('currentCarCount').value);
 
-    // 1. NYKYTILA
     let curTotal = { depreciation: 0, interest: 0, maintenance: 0, insurance: 0, fuel: 0, total: 0 };
     if (carCount >= 1) {
       const c1 = calculateCurrentCar('c1', months);
@@ -790,28 +669,20 @@
     }
     const curPerMonth = curTotal.total / months;
 
-    // 2. BEELY
     const beelyMo = parseFloat(document.getElementById('beelyMonthly').value) || 0;
     const beelyOpen = parseFloat(document.getElementById('beelyOpening').value) || 0;
     const beelyIns = (parseFloat(document.getElementById('beelyInsurance').value) || 0) * months;
     const beelyEstExtra = parseFloat(document.getElementById('beelyEstReturn').value) || 0;
     const beelyWorstExtra = parseFloat(document.getElementById('beelyWorstReturn').value) || 0;
 
-    const bFuel = calculateFuelCost(
-      newCarKm, months,
-      document.getElementById('b_fuelType').value,
-      parseFloat(document.getElementById('b_fuelCons').value) || 0,
-      parseFloat(document.getElementById('b_fuelPrice').value) || 0
-    );
-    document.getElementById('b_fuelCostLabel').textContent = 
-      `→ Polttoainekulu: ${Math.round(bFuel / months)} €/kk (${Math.round(bFuel).toLocaleString('fi-FI')} € koko ajalta)`;
+    const bFuel = calculateFuelCost(newCarKm, months, document.getElementById('b_fuelType').value, parseFloat(document.getElementById('b_fuelCons').value) || 0, parseFloat(document.getElementById('b_fuelPrice').value) || 0);
+    document.getElementById('b_fuelCostLabel').textContent = `→ Polttoainekulu: ${Math.round(bFuel / months)} €/kk (${Math.round(bFuel).toLocaleString('fi-FI')} € koko ajalta)`;
 
     const beelyBase = (beelyMo * months) + beelyOpen + beelyIns + bFuel;
     const beelyCostBest = beelyBase;
     const beelyCostEst = beelyBase + beelyEstExtra;
     const beelyCostWorst = beelyBase + beelyWorstExtra;
 
-    // 3. OSAMAKSU
     const carPrice = parseFloat(document.getElementById('carPrice').value) || 0;
     const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
     const balloon = Math.max(0, parseFloat(document.getElementById('balloonPayment').value) || 0);
@@ -819,38 +690,24 @@
     const loanPeriod = parseFloat(document.getElementById('loanPeriod').value) || 60;
     const loanInsTotal = (parseFloat(document.getElementById('loanInsurance').value) || 0) * months;
 
-    const principal = Math.max(0, carPrice - downPayment);
-    const sim = simulateLoanInterest(principal, balloon, loanRate, loanPeriod, months);
+    const sim = simulateLoanInterest(Math.max(0, carPrice - downPayment), balloon, loanRate, loanPeriod, months);
+    document.getElementById('loanPaymentBadge').textContent = `→ Rahoituksen kk-erä: ${Math.round(sim.monthlyPayment).toLocaleString('fi-FI')} €/kk`;
 
-    document.getElementById('loanPaymentBadge').textContent = 
-      `→ Rahoituksen kk-erä: ${Math.round(sim.monthlyPayment).toLocaleString('fi-FI')} €/kk (rahoitusosuus)`;
+    const lFuel = calculateFuelCost(newCarKm, months, document.getElementById('l_fuelType').value, parseFloat(document.getElementById('l_fuelCons').value) || 0, parseFloat(document.getElementById('l_fuelPrice').value) || 0);
+    document.getElementById('l_fuelCostLabel').textContent = `→ Polttoainekulu: ${Math.round(lFuel / months)} €/kk (${Math.round(lFuel).toLocaleString('fi-FI')} € koko ajalta)`;
 
-    const lFuel = calculateFuelCost(
-      newCarKm, months,
-      document.getElementById('l_fuelType').value,
-      parseFloat(document.getElementById('l_fuelCons').value) || 0,
-      parseFloat(document.getElementById('l_fuelPrice').value) || 0
-    );
-    document.getElementById('l_fuelCostLabel').textContent = 
-      `→ Polttoainekulu: ${Math.round(lFuel / months)} €/kk (${Math.round(lFuel).toLocaleString('fi-FI')} € koko ajalta)`;
-
-    // Skenaariot: Osamaksu
     const resBest = parseFloat(document.getElementById('resBest').value) || 0;
     const maintBest = ((parseFloat(document.getElementById('maintBest').value) || 0) / 12) * months;
-    const depBest = Math.max(0, carPrice - resBest);
-    const loanCostBest = depBest + sim.interestPaid + maintBest + loanInsTotal + lFuel;
+    const loanCostBest = Math.max(0, carPrice - resBest) + sim.interestPaid + maintBest + loanInsTotal + lFuel;
 
     const resEst = parseFloat(document.getElementById('resEst').value) || 0;
     const maintEst = ((parseFloat(document.getElementById('maintEst').value) || 0) / 12) * months;
-    const depEst = Math.max(0, carPrice - resEst);
-    const loanCostEst = depEst + sim.interestPaid + maintEst + loanInsTotal + lFuel;
+    const loanCostEst = Math.max(0, carPrice - resEst) + sim.interestPaid + maintEst + loanInsTotal + lFuel;
 
     const resWorst = parseFloat(document.getElementById('resWorst').value) || 0;
     const maintWorst = ((parseFloat(document.getElementById('maintWorst').value) || 0) / 12) * months;
-    const depWorst = Math.max(0, carPrice - resWorst);
-    const loanCostWorst = depWorst + sim.interestPaid + maintWorst + loanInsTotal + lFuel;
+    const loanCostWorst = Math.max(0, carPrice - resWorst) + sim.interestPaid + maintWorst + loanInsTotal + lFuel;
 
-    // Skenaariokorttien päivitys
     function updateScenarioCard(prefix, bCost, lCost) {
       document.getElementById(`curMo${prefix}`).textContent = Math.round(curPerMonth).toLocaleString('fi-FI') + ' €/kk';
       document.getElementById(`bMo${prefix}`).textContent = Math.round(bCost / months).toLocaleString('fi-FI') + ' €/kk';
@@ -875,14 +732,13 @@
     updateScenarioCard('Est', beelyCostEst, loanCostEst);
     updateScenarioCard('Worst', beelyCostWorst, loanCostWorst);
 
-    // Taulukon renderöinti
     const tbody = document.getElementById('tableBody');
     tbody.innerHTML = `
       <tr>
         <td>Pääomakulu / Arvonalenema / Kk-maksu</td>
         <td class="num">${Math.round(curTotal.depreciation).toLocaleString('fi-FI')} €</td>
         <td class="num">${Math.round(beelyMo * months).toLocaleString('fi-FI')} €</td>
-        <td class="num">${Math.round(depEst).toLocaleString('fi-FI')} €</td>
+        <td class="num">${Math.round(Math.max(0, carPrice - resEst)).toLocaleString('fi-FI')} €</td>
       </tr>
       <tr>
         <td>Korot & rahoituskulut / Avauskulut</td>
@@ -929,16 +785,10 @@
     `;
   }
 
-  // Alustukset
   ['c1', 'c2'].forEach(p => setupOwnershipListeners(p));
   ['c1', 'c2', 'b', 'l'].forEach(p => setupFuelListeners(p));
-
-  document.querySelectorAll('input, select').forEach(el => {
-    el.addEventListener('input', calculate);
-  });
-
+  document.querySelectorAll('input, select').forEach(el => el.addEventListener('input', calculate));
   calculate();
 </script>
-
 </body>
 </html>
