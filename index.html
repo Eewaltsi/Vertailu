@@ -26,7 +26,7 @@
       justify-content: center;
     }
 
-    .container { width: 100%; max-width: 1040px; }
+    .container { width: 100%; max-width: 1060px; }
 
     header { text-align: center; margin-bottom: 24px; }
     h1 { font-size: 1.8rem; margin-bottom: 6px; }
@@ -42,7 +42,7 @@
 
     .grid-2 {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
       gap: 20px;
       margin-bottom: 20px;
     }
@@ -81,6 +81,12 @@
     .row-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 10px;
     }
 
@@ -151,7 +157,14 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--accent);
-      margin: 12px 0 6px 0;
+      margin: 14px 0 6px 0;
+    }
+
+    .info-tag {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 0.8rem;
+      color: var(--loan);
     }
   </style>
 </head>
@@ -160,13 +173,14 @@
 <div class="container">
   <header>
     <h1>Beely vs. Osamaksu: Skenaarioanalyysi</h1>
-    <p class="subtitle">Vertaa kustannusriskejä (Best, Estimated, Worst Case) valitulla pitoajalla</p>
+    <p class="subtitle">Mukana suuremman viimeisen erän korkovaikutus ja kassavirrat</p>
   </header>
 
+  <!-- Yleisasetukset -->
   <div class="card">
     <div class="row-2">
       <div class="input-group">
-        <label for="periodMonths">Pitoaika (kk)</label>
+        <label for="periodMonths">Suunniteltu pitoaika (kk)</label>
         <input type="number" id="periodMonths" value="24" min="1">
       </div>
       <div class="input-group">
@@ -177,10 +191,11 @@
   </div>
 
   <div class="grid-2">
+    <!-- BEELY -->
     <div class="card beely-card">
       <h2 style="color: var(--beely)">Beely</h2>
       <div class="input-group">
-        <label for="beelyMonthly">Kuukausimaksu (€/kk)</label>
+        <label for="beelyMonthly">Kuukausimaksu sis. km (€/kk)</label>
         <input type="number" id="beelyMonthly" value="389">
       </div>
       <div class="row-2">
@@ -194,19 +209,20 @@
         </div>
       </div>
 
-      <div class="sub-head">Skenaariokohtaiset lisäkulut (koko pitoaika)</div>
+      <div class="sub-head">Skenaariokohtaiset lisäkulut koko ajalta</div>
       <div class="row-2">
         <div class="input-group">
-          <label for="beelyWorstReturn">Worst Case: Korjaus- / ylikilometrikulu (€)</label>
-          <input type="number" id="beelyWorstReturn" value="800" title="Palautustarkastuksen naarmut/lommot tai ylimääräiset kilometrit">
+          <label for="beelyEstReturn">Est: Palautuskulut (€)</label>
+          <input type="number" id="beelyEstReturn" value="150" title="Pesut/pikkunaarmut">
         </div>
         <div class="input-group">
-          <label for="beelyEstReturn">Est. Case: Pienkulut (€)</label>
-          <input type="number" id="beelyEstReturn" value="150" title="Esim. pesut/pientarvikkeet">
+          <label for="beelyWorstReturn">Worst: Ylikm / vauriokulut (€)</label>
+          <input type="number" id="beelyWorstReturn" value="800">
         </div>
       </div>
     </div>
 
+    <!-- OSAMAKSU -->
     <div class="card loan-card">
       <h2 style="color: var(--loan)">Oma auto osamaksulla</h2>
       <div class="row-2">
@@ -219,7 +235,12 @@
           <input type="number" id="downPayment" value="2000">
         </div>
       </div>
-      <div class="row-2">
+
+      <div class="row-3">
+        <div class="input-group">
+          <label for="balloonPayment">Viimeinen erä (€)</label>
+          <input type="number" id="balloonPayment" value="8000" title="Suurempi viimeinen erä laina-ajan päätteeksi">
+        </div>
         <div class="input-group">
           <label for="loanRate">Korko (% todellinen)</label>
           <input type="number" id="loanRate" value="4.9" step="0.1">
@@ -229,6 +250,11 @@
           <input type="number" id="loanPeriod" value="60">
         </div>
       </div>
+
+      <div class="input-group">
+        <div id="loanPaymentBadge" class="info-tag">Lasketaan lainaerää...</div>
+      </div>
+
       <div class="input-group">
         <label for="loanInsurance">Vakuutus (€/kk)</label>
         <input type="number" id="loanInsurance" value="65">
@@ -268,6 +294,7 @@
     </div>
   </div>
 
+  <!-- Skenaariokortit -->
   <div class="scenario-grid">
     <div class="scenario-card" id="cardBest">
       <h3>Best Case <span id="badgeBest" class="badge-diff"></span></h3>
@@ -294,8 +321,9 @@
     </div>
   </div>
 
+  <!-- Vertailutaulukko -->
   <div class="card">
-    <h2>Yksityiskohtainen kuluvertailu (Koko pitoajalta)</h2>
+    <h2>Yksityiskohtainen erittely koko pitoajalta</h2>
     <div class="table-container">
       <table>
         <thead>
@@ -308,7 +336,8 @@
           </tr>
         </thead>
         <tbody id="tableBody">
-          </tbody>
+          <!-- Täytetään JS:llä -->
+        </tbody>
       </table>
     </div>
   </div>
@@ -318,7 +347,7 @@
   function calculate() {
     const months = Math.max(1, parseFloat(document.getElementById('periodMonths').value) || 1);
 
-    // Beely
+    // Beely laskelmat
     const beelyMo = parseFloat(document.getElementById('beelyMonthly').value) || 0;
     const beelyOpen = parseFloat(document.getElementById('beelyOpening').value) || 0;
     const beelyIns = (parseFloat(document.getElementById('beelyInsurance').value) || 0) * months;
@@ -330,24 +359,36 @@
     const beelyCostEst = beelyBase + beelyEstExtra;
     const beelyCostWorst = beelyBase + beelyWorstExtra;
 
-    // Osamaksu rahoituslaskelma
+    // Osamaksu rahoituslaskelma ml. viimeinen erä (Balloon)
     const carPrice = parseFloat(document.getElementById('carPrice').value) || 0;
     const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+    const balloon = Math.max(0, parseFloat(document.getElementById('balloonPayment').value) || 0);
     const loanRate = (parseFloat(document.getElementById('loanRate').value) || 0) / 100 / 12;
     const loanPeriod = parseFloat(document.getElementById('loanPeriod').value) || 60;
     const loanInsTotal = (parseFloat(document.getElementById('loanInsurance').value) || 0) * months;
 
     const principal = Math.max(0, carPrice - downPayment);
+    
+    // Kuukausierän laskenta suuremmalla viimeisellä erällä:
+    // P = PMT * ((1 - (1+r)^-n) / r) + Balloon * (1+r)^-n
     let monthlyLoanPayment = 0;
     if (loanRate > 0) {
-      monthlyLoanPayment = (principal * loanRate * Math.pow(1 + loanRate, loanPeriod)) / (Math.pow(1 + loanRate, loanPeriod) - 1);
+      const discountFactor = Math.pow(1 + loanRate, -loanPeriod);
+      const pvAnnuity = (1 - discountFactor) / loanRate;
+      monthlyLoanPayment = (principal - (balloon * discountFactor)) / pvAnnuity;
     } else {
-      monthlyLoanPayment = principal / loanPeriod;
+      monthlyLoanPayment = (principal - balloon) / loanPeriod;
     }
 
+    // Näytetään laskettu kuukausierä suoraan kentän alla
+    document.getElementById('loanPaymentBadge').textContent = 
+      `→ Rahoituksen kk-erä: ${Math.round(monthlyLoanPayment).toLocaleString('fi-FI')} €/kk (ennen vakuutusta)`;
+
+    // Simuloidaan korkokertymä ja velan lyhentyminen halutulle pitoajalle
     let remainingDebt = principal;
     let interestPaid = 0;
     const calcMonths = Math.min(months, loanPeriod);
+
     for (let i = 0; i < calcMonths; i++) {
       const interest = remainingDebt * loanRate;
       const amort = monthlyLoanPayment - interest;
@@ -355,7 +396,7 @@
       remainingDebt -= amort;
     }
 
-    // Skenaarioiden muuttujat
+    // Skenaarioiden laskenta (Arvonalenema + Korot + Huollot + Vakuutukset)
     const resBest = parseFloat(document.getElementById('resBest').value) || 0;
     const maintBest = ((parseFloat(document.getElementById('maintBest').value) || 0) / 12) * months;
     const depBest = Math.max(0, carPrice - resBest);
@@ -371,7 +412,6 @@
     const depWorst = Math.max(0, carPrice - resWorst);
     const loanCostWorst = depWorst + interestPaid + maintWorst + loanInsTotal;
 
-    // Apufunktio korttien päivittämiseen
     function updateScenarioCard(prefix, bCost, lCost) {
       document.getElementById(`bTotal${prefix}`).textContent = Math.round(bCost).toLocaleString('fi-FI') + ' €';
       document.getElementById(`lTotal${prefix}`).textContent = Math.round(lCost).toLocaleString('fi-FI') + ' €';
@@ -395,7 +435,7 @@
     updateScenarioCard('Est', beelyCostEst, loanCostEst);
     updateScenarioCard('Worst', beelyCostWorst, loanCostWorst);
 
-    // Taulukon päivitys
+    // Taulukon renderöinti
     const tbody = document.getElementById('tableBody');
     tbody.innerHTML = `
       <tr>
@@ -406,15 +446,15 @@
         <td class="num">${Math.round(depWorst).toLocaleString('fi-FI')} €</td>
       </tr>
       <tr>
-        <td>Korot & rahoituskulut / Aloituskulut</td>
-        <td class="num">${Math.round(beelyOpen).toLocaleString('fi-FI')} €</td>
+        <td>Korko- & rahoituskulut (${calcMonths} kk)</td>
+        <td class="num">${Math.round(beelyOpen).toLocaleString('fi-FI')} € (aloitus)</td>
         <td class="num">${Math.round(interestPaid).toLocaleString('fi-FI')} €</td>
         <td class="num">${Math.round(interestPaid).toLocaleString('fi-FI')} €</td>
         <td class="num">${Math.round(interestPaid).toLocaleString('fi-FI')} €</td>
       </tr>
       <tr>
         <td>Huollot, katsastukset & korjaukset</td>
-        <td class="num">0 € (sis.)</td>
+        <td class="num">0 € (sisältyy)</td>
         <td class="num">${Math.round(maintBest).toLocaleString('fi-FI')} €</td>
         <td class="num">${Math.round(maintEst).toLocaleString('fi-FI')} €</td>
         <td class="num">${Math.round(maintWorst).toLocaleString('fi-FI')} €</td>
@@ -427,7 +467,7 @@
         <td class="num">${Math.round(loanInsTotal).toLocaleString('fi-FI')} €</td>
       </tr>
       <tr>
-        <td>Ylimääräiset kulut / Palautustarkastus</td>
+        <td>Sopimuksen päättymiskulut</td>
         <td class="num">${Math.round(beelyEstExtra).toLocaleString('fi-FI')} €</td>
         <td class="num">0 €</td>
         <td class="num">0 €</td>
@@ -441,11 +481,16 @@
         <td class="num">${Math.round(loanCostWorst).toLocaleString('fi-FI')} €</td>
       </tr>
       <tr style="font-weight: 600;">
-        <td>Kustannus / kk</td>
+        <td>Todellinen kulu / kk</td>
         <td class="num">${Math.round(beelyCostEst / months).toLocaleString('fi-FI')} €/kk</td>
         <td class="num">${Math.round(loanCostBest / months).toLocaleString('fi-FI')} €/kk</td>
         <td class="num">${Math.round(loanCostEst / months).toLocaleString('fi-FI')} €/kk</td>
         <td class="num">${Math.round(loanCostWorst / months).toLocaleString('fi-FI')} €/kk</td>
+      </tr>
+      <tr style="color: var(--text-muted); font-size: 0.8rem;">
+        <td>Jäljellä oleva lainapääoma ${months} kk kohdalla</td>
+        <td class="num">-</td>
+        <td class="num" colspan="3" style="text-align: right;">${Math.round(remainingDebt).toLocaleString('fi-FI')} €</td>
       </tr>
     `;
   }
